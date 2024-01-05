@@ -89,9 +89,6 @@ require 'pry'
         #puts '問題: ' + q[0].to_s
         #puts q[1]
         #puts '解答: ' + q[2][a_answers[q[0]]]
-        if q[0] < 28
-            next
-        end
         if q[0] >= 1 && q[0] <= 9
             File.open('shizen.txt', 'a') do |f|
                 f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t気候、地理、動植物")
