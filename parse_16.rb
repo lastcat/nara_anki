@@ -84,10 +84,65 @@ require 'pry'
     end
     # binding.irb
 
+    # 書き込み
     questions.each do |q|
-        puts '問題: ' + q[0].to_s
-        puts q[1]
-        puts '解答: ' + q[2][a_answers[q[0]]]
+        #puts '問題: ' + q[0].to_s
+        #puts q[1]
+        #puts '解答: ' + q[2][a_answers[q[0]]]
+        if q[0] < 28
+            next
+        end
+        if q[0] >= 1 && q[0] <= 9
+            File.open('shizen.txt', 'a') do |f|
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t気候、地理、動植物")
+            end
+        end
+        if q[0] >= 10 && q[0] <= 18
+            File.open('rekisi.txt', 'a') do |f|
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t歴史")
+            end
+        end
+        if q[0] >= 19 && q[0] <= 27
+            File.open('iseki.txt', 'a') do |f|
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t遺跡、古墳")
+            end
+        end
+        if q[0] >= 28 && q[0] <= 45
+            File.open('shrine.txt', 'a') do |f|
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t寺社")
+            end
+        end
+        if q[0] >= 46 && q[0] <= 54
+            File.open('build.txt', 'a') do |f|
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t建築、彫刻、絵画")
+            end
+        end
+        if q[0] >= 55 && q[0] <= 63
+            File.open('bungaku.txt', 'a') do |f|
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t文学")
+            end
+        end
+        if q[0] >= 64 && q[0] <= 72
+            File.open('kougei.txt', 'a') do |f|
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t工芸、特産品")
+            end
+        end
+        if q[0] >= 73 && q[0] <= 81
+            File.open('maturi.txt', 'a') do |f|
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t祭り、伝統行事")
+            end
+        end
+        if q[0] >= 82 && q[0] <= 90
+            File.open('kankou.txt', 'a') do |f|
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t観光")
+            end
+        end
+        if q[0] >= 91
+            File.open('tokushu.txt', 'a') do |f|
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t特集")
+            end
+        end
     end
+
 
 #end
