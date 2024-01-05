@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'pdf-reader'
 require 'pry'
-4,6,8,9
+
 [1,4,6,8,9].each do |i|
     puts i.to_s + '回'
     text_url = 'https://www.nara-cci.or.jp/narakentei/06/'  + '0' +  i.to_s + '/02.pdf'
