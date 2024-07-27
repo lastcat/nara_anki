@@ -52,16 +52,21 @@ end
 # ある回答が他の問題文に出ている場合、問題の登場数に+1して関連ワードに追加する
 answers.keys.each do |a|
     problems.keys.each do |pro|
-        if(problems[pro]['answer'] == a || (a.length > 1 && pro.include?(a))) then
+        if(problems[pro]['answer'] == a || (a.length > 1 && pro.include?(a)) || (a.length > 1 && problems[pro]['answer'].include?(a))) then
             problems[pro]['count'] += 1
-            problems[pro]['related_words'].push(a)
+            problems[pro]['related_words'] = problems[pro]['related_words'] | [a]
         end
     end
 end
-p problems.sort_by {|key, val| -val['count'] }
+=begin
+problems.sort_by {|key, val| -val['count'] }.each do |a|
+    p a
+    puts "\n"
+end
+=end
 related_problems = []
 
-=begin
+#=begin
 problems.keys.each do |k|
     related_set = []
     unless problems[k]['marked'] then
@@ -73,13 +78,15 @@ problems.keys.each do |k|
         problems[k]['marked'] = true
         problems.keys.each do |_k|
             #なんか空文字列が引っかかるから1以上にしてみる
-            if  problems[_k]['marked'] == false && (problems[k]['related_words'] & problems[_k]['related_words']).filter{|a| a.length > 1}.length > 0
-                related_set.push(_k+" A: " +problems[_k]['answer'])
-                related_set.push("共通ワード: " + (problems[k]['related_words'] & problems[_k]['related_words'])[0])
+            if  problems[_k]['marked'] == false && (problems[k]['related_words'] & problems[_k]['related_words']).filter{|a| a.length > 2}.length > 0
+                set = []
+                set.push(_k+" A: " +problems[_k]['answer'])
+                set.push("共通ワード: " + (problems[k]['related_words'] & problems[_k]['related_words'])[0])
+                related_set.push(set)
                 problems[_k]['marked'] = true
-                problems[k]['related_words'] = problems[k]['related_words'] & problems[_k]['related_words']
+                problems[k]['related_words'] = problems[k]['related_words'] | problems[_k]['related_words']
                 puts "    " + _k+" A:" +problems[_k]['answer']
-                puts "    共通ワード: " + (problems[k]['related_words'] & problems[_k]['related_words']).to_s
+                puts "        共通ワード: " + (problems[k]['related_words'] & problems[_k]['related_words']).to_s
                 #p problems[k]['related_words'] & problems[_k]['related_words']
             end
         end
@@ -93,7 +100,9 @@ end
 
 #=begin
 related_problems.sort_by{|a| a.length}.reverse.each do |set|
-    p set
+    set.each do |e|
+        p e
+    end
     puts "重要度: " + set.length.to_s
     puts "\n"
 end
