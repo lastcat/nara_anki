@@ -40,7 +40,7 @@ require 'pry'
                 next
             end
             text = page.text.gsub(/{.*}/, '').gsub(/^\n/, '').gsub(/\t/, '').gsub(/ |　/, '').gsub(/^[。]\n /, '').gsub(/(?<=[^\。])\R/, '')
-            text_and_options = text.split('（')
+            text_and_options = text.split('(')
             text_and_options.each do |e|
                 # ページ最初の文言を除く
                 if !e.include?('ア')
@@ -49,21 +49,22 @@ require 'pry'
                 #ページ末尾のページ番号を除く
                 e = e.split('-')[0]
                 begin 
-                    re = Regexp.new('[0-9]+）')
+                    #　問題番号を設定する
+                    re = Regexp.new('[0-9]+\)')
                     number = re.match(e)
                     number = number[0][0..-2].to_i
                 rescue =>  error
-                    puts '個別対応'
+                    puts '個別対応A'
                     puts e
                     next
                 end
                 #最初の"1)"みたいなのを除く
-                _e = e.split('）')[1]
+                _e = e.split(')')[1]
                 #問題と回答を分ける
                 begin 
                     t_a = _e.split("\n")
                 rescue =>  error
-                    puts '個別対応'
+                    puts '個別対応B'
                     puts e
                     next
                 end
@@ -72,9 +73,9 @@ require 'pry'
                 #　ア.イ.ウ.エを除く
                 begin
                     answers = t_a[1].split('．')
-                    answers_array = [answers[1][0..-2], answers[2][0..-2], answers[3][0..-2], answers[4]]
+                    answers_array = [answers[0][1..-2], answers[1][0..-2], answers[2][0..-2], answers[3]]
                 rescue =>  error
-                    puts '個別対応'
+                    puts '個別対応C'
                     puts e
                     next
                 end
@@ -82,7 +83,6 @@ require 'pry'
             end
         end
     end
-    # binding.irb
 
     # 書き込み
     questions.each do |q|
@@ -91,55 +91,56 @@ require 'pry'
         #puts '解答: ' + q[2][a_answers[q[0]]]
         if q[0] >= 1 && q[0] <= 9
             File.open('shizen.txt', 'a') do |f|
-                #f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t気候、地理、動植物")
-                puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t気候、地理、動植物")
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t気候、地理、動植物")
             end
         end
         if q[0] >= 10 && q[0] <= 18
             File.open('rekisi.txt', 'a') do |f|
-                #f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t歴史")
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t歴史")
             end
         end
         if q[0] >= 19 && q[0] <= 27
             File.open('iseki.txt', 'a') do |f|
-                #f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t遺跡、古墳")
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t遺跡、古墳")
             end
         end
         if q[0] >= 28 && q[0] <= 45
             File.open('shrine.txt', 'a') do |f|
-                #f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t寺社")
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t寺社")
             end
         end
         if q[0] >= 46 && q[0] <= 54
             File.open('build.txt', 'a') do |f|
-                #f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t建築、彫刻、絵画")
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t建築、彫刻、絵画")
             end
         end
         if q[0] >= 55 && q[0] <= 63
             File.open('bungaku.txt', 'a') do |f|
-                #f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t文学")
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t文学")
             end
         end
         if q[0] >= 64 && q[0] <= 72
             File.open('kougei.txt', 'a') do |f|
-                #f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t工芸、特産品")
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t工芸、特産品")
             end
         end
         if q[0] >= 73 && q[0] <= 81
             File.open('maturi.txt', 'a') do |f|
-                #f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t祭り、伝統行事")
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t祭り、伝統行事")
             end
         end
         if q[0] >= 82 && q[0] <= 90
             File.open('kankou.txt', 'a') do |f|
-                #f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t観光")
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t観光")
             end
         end
+=begin
         if q[0] >= 91
             File.open('tokushu.txt', 'a') do |f|
-                #f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t特集")
+                f.puts("#{q[1]}\t#{q[2][a_answers[q[0]]]}\t特集")
             end
         end
+=end
     end
 
 

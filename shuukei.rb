@@ -44,39 +44,48 @@ files.each do |i|
     end
 end
 
+# answers: key回答、value登場回数のハッシュ
+# problems: key問題文、value:色々入れた連想配列
 
-#p answers.sort_by {|key, val| -val }
+
+
+# ある回答が他の問題文に出ている場合、問題の登場数に+1して関連ワードに追加する
 answers.keys.each do |a|
     problems.keys.each do |pro|
-        if(pro.include?(a)) then
+        if(problems[pro]['answer'] == a || (a.length > 1 && pro.include?(a))) then
             problems[pro]['count'] += 1
             problems[pro]['related_words'].push(a)
         end
     end
 end
-#p problems.sort_by {|key, val| -val['count'] }
+p problems.sort_by {|key, val| -val['count'] }
 related_problems = []
 
-
+=begin
 problems.keys.each do |k|
     related_set = []
     unless problems[k]['marked'] then
+        #k: 問題文
+        #+problems[k]['answer']: 答え
         puts k+" A:" +problems[k]['answer']
         puts "の類題"
         related_set.push(k+" A: " +problems[k]['answer'])
         problems[k]['marked'] = true
         problems.keys.each do |_k|
-            if  problems[_k]['marked'] == false && (problems[k]['related_words'] & problems[_k]['related_words']).length > 0
-                # related_set.push("共通ワード: " + (problems[k]['related_words'] & problems[_k]['related_words'])[0])
+            #なんか空文字列が引っかかるから1以上にしてみる
+            if  problems[_k]['marked'] == false && (problems[k]['related_words'] & problems[_k]['related_words']).filter{|a| a.length > 1}.length > 0
                 related_set.push(_k+" A: " +problems[_k]['answer'])
+                related_set.push("共通ワード: " + (problems[k]['related_words'] & problems[_k]['related_words'])[0])
                 problems[_k]['marked'] = true
-                puts _k+" A:" +problems[_k]['answer']
-                puts "共通ワード"
-                p problems[k]['related_words'] & problems[_k]['related_words']
+                problems[k]['related_words'] = problems[k]['related_words'] & problems[_k]['related_words']
+                puts "    " + _k+" A:" +problems[_k]['answer']
+                puts "    共通ワード: " + (problems[k]['related_words'] & problems[_k]['related_words']).to_s
+                #p problems[k]['related_words'] & problems[_k]['related_words']
             end
         end
     end
-    puts "\n"
+    #puts "\n"
+    #p related_set
     if (related_set.length > 0) then
         related_problems.push(related_set)
     end
@@ -85,9 +94,10 @@ end
 #=begin
 related_problems.sort_by{|a| a.length}.reverse.each do |set|
     p set
+    puts "重要度: " + set.length.to_s
     puts "\n"
 end
-    #=end
+#=end
 =begin
 array = [1,2,3,4]
 array.each_with_index do |e,i|
